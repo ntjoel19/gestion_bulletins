@@ -1,0 +1,719 @@
+openapi: 3.0.3
+info:
+  title: Gestion de Bulletins Scolaires API
+  version: 1.0.0
+  description: API pour gérer les bulletins scolaires des élèves
+
+servers:
+  - url: http://localhost:3000
+    description: Développement
+
+paths:
+  /api/eleves:
+    get:
+      summary: Récupérer tous les élèves
+      tags:
+        - Élèves
+      responses:
+        '200':
+          description: Liste des élèves récupérée avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Eleve'
+  
+    post:
+      summary: Créer un nouvel élève
+      tags:
+        - Élèves
+      requestBody:
+        description: Données de l'élève à créer
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/Eleve'
+      responses:
+        '201':
+          description: Élève créé avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Eleve'
+        '400':
+          description: Requête invalide
+
+  /api/eleves/{eleveId}:
+    get:
+      summary: Récupérer un élève par ID
+      tags:
+        - Élèves
+      parameters:
+        - name: eleveId
+          in: path
+          required: true
+          description: ID de l'élève à récupérer
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Élève récupéré avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Eleve'
+        '404':
+          description: Élève non trouvé
+
+    put:
+      summary: Mettre à jour un élève par ID
+      tags:
+        - Élèves
+      parameters:
+        - name: eleveId
+          in: path
+          required: true
+          description: ID de l'élève à mettre à jour
+          schema:
+            type: string
+      requestBody:
+        description: Nouvelles données de l'élève à mettre à jour
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Eleve'
+      responses:
+        '200':
+          description: Élève mis à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Eleve'
+        '400':
+          description: Requête invalide
+        '404':
+          description: Élève non trouvé
+
+    delete:
+      summary: Supprimer un élève par ID
+      tags:
+        - Élèves
+      parameters:
+        - name: eleveId
+          in: path
+          required: true
+          description: ID de l'élève à supprimer
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Élève supprimé avec succès
+        '404':
+          description: Élève non trouvé
+
+  /api/enseignants:
+    get:
+      summary: Récupérer tous les enseignants
+      tags:
+        - Enseignants
+      responses:
+        '200':
+          description: Liste des enseignants récupérée avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Enseignant'
+    post:
+      summary: Créer un nouvel enseignant
+      tags:
+        - Enseignants
+      requestBody:
+        description: Données de l'enseignant à créer
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Enseignant'
+      responses:
+        '201':
+          description: Enseignant créé avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enseignant'
+        '400':
+          description: Requête invalide
+
+  /api/enseignants/{enseignantId}:
+    get:
+      summary: Récupérer un enseignant par ID
+      tags:
+        - Enseignants
+      parameters:
+        - name: enseignantId
+          in: path
+          required: true
+          description: ID de l'enseignant à récupérer
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Enseignant récupéré avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enseignant'
+        '404':
+          description: Enseignant non trouvé
+
+    put:
+      summary: Mettre à jour un Enseignant par ID
+      tags:
+        - Enseignants
+      parameters:
+        - name: enseignantId
+          in: path
+          required: true
+          description: ID de l'enseignant à mettre à jour
+          schema:
+            type: string
+      requestBody:
+        description: Nouvelles données de l'enseignant à mettre à jour
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Enseignant'
+      responses:
+        '200':
+          description: Enseignant mis à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enseignant'
+        '400':
+          description: Requête invalide
+        '404':
+          description: Enseignant non trouvé
+
+    delete:
+      summary: Supprimer un enseignant par ID
+      tags:
+        - Enseignants
+      parameters:
+        - name: enseignantId
+          in: path
+          required: true
+          description: ID de l'enseignant à supprimer
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Enseignant supprimé avec succès
+        '404':
+          description: Enseignant non trouvé
+
+  /api/classes:
+    get:
+      summary: Récupérer toutes les classes
+      tags:
+        - Classes
+      responses:
+        '200':
+          description: Liste des classes récupérée avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Classe'
+                  
+    post:
+      summary: Créer une nouvelle classe
+      tags:
+        - Classes
+      requestBody:
+        description: Données de la classe à créer
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/Classe'
+      responses:
+        '201':
+          description: Classe créée avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Classe'
+        '400':
+          description: Requête invalide
+
+  /api/classes/{classeId}:
+    get:
+      summary: Récupérer une classe par ID
+      tags:
+        - Classes
+      parameters:
+        - name: classeId
+          in: path
+          required: true
+          description: ID de la classe à récupérer
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Classe récupérée avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Classe'
+        '404':
+          description: Classe non trouvée
+
+    put:
+      summary: Mettre à jour un Classe par ID
+      tags:
+        - Classes
+      parameters:
+        - name: classeId
+          in: path
+          required: true
+          description: ID de la classe à mettre à jour
+          schema:
+            type: string
+      requestBody:
+        description: Nouvelles données de la classe à mettre à jour
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Classe'
+      responses:
+        '200':
+          description: Classe mise à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Classe'
+        '400':
+          description: Requête invalide
+        '404':
+          description: Classe non trouvée
+
+    delete:
+      summary: Supprimer une classe par ID
+      tags:
+        - Classes
+      parameters:
+        - name: classeId
+          in: path
+          required: true
+          description: ID de la classe à supprimer
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Classe supprimé avec succès
+        '404':
+          description: Classe non trouvée
+
+  /api/notes:
+    get:
+      summary: Récupérer toutes les notes
+      tags:
+        - Notes
+      responses:
+        '200':
+          description: Liste des notes récupérées avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Note'
+
+    post:
+      summary: Insérer une note à un élève pour une matière données.
+      tags:
+        - Notes
+      requestBody:
+        description: La note à attribuer à l'élève dans la matière
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/Note'
+      responses:
+        '201':
+          description: Note insérée avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '400':
+          description: Requête invalide
+
+  /api/notes/{classeId}:
+    get:
+      summary: Récupérer toutes les notes d'une classe
+      tags:
+        - Notes
+      parameters:
+        - name: classeId
+          in: path
+          required: true
+          description: ID de la classe dont on veut récupérer les notes
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Liste des notes récupérées avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '404':
+          description: Notes non trouvées
+
+  /api/notes/{eleveId}:
+    get:
+      summary: Récupérer toutes les notes d'un élève
+      tags:
+        - Notes
+      parameters:
+        - name: eleveId
+          in: path
+          required: true
+          description: ID de l'élève dont on veut récupérer les notes
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Liste des notes récupérées avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '404':
+          description: Notes non trouvées
+
+  /api/notes/{matiereId}:
+    get:
+      summary: Récupérer toutes les notes d'une matière
+      tags:
+        - Notes
+      parameters:
+        - name: matiereId
+          in: path
+          required: true
+          description: ID de la matière dont on veut récupérer les notes
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Liste des notes récupérées avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '404':
+          description: Notes non trouvées
+
+  /api/notes/{classeId}/{matiereId}:
+    get:
+      summary: Récupérer toutes les notes d'un classe dans une matière donnée
+      tags:
+        - Notes
+      parameters:
+        - name: classeId
+          in: path
+          required: true
+          description: ID de la classe dont on veut récupérer les notes
+          schema:
+            type: string
+        - name: matiereId
+          in: path
+          required: true
+          description: ID de la matière dont on veut récupérer les notes
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Liste des notes récupérées avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '404':
+          description: Notes non trouvées
+          
+  /api/notes/{eleveId}/{matiereId}:
+    get:
+      summary: Récupérer la note dansne matière donnée
+      tags:
+        - Notes
+      parameters:
+        - name: eleveId
+          in: path
+          required: true
+          description: ID de l'élève dont on veut récupérer la note
+          schema:
+            type: string
+        - name: matiereId
+          in: path
+          required: true
+          description: ID de la matière dont on veut récupérer la note
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Liste des notes récupérées avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '404':
+          description: Notes non trouvées
+          
+    put:
+      summary: Mettre à jour une note d'un élève par ID
+      tags:
+        - Notes
+      parameters:
+        - name: eleveId
+          in: path
+          required: true
+          description: ID de l'élève à mettre à jour
+          schema:
+            type: string
+        - name: matiereId
+          in: path
+          required: true
+          description: ID de la matière dont on veut récupérer la note
+          schema:
+            type: string
+      requestBody:
+        description: Nouvelles donnée de l'élève à mettre à jour
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Note'
+      responses:
+        '200':
+          description: Note mise à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '400':
+          description: Requête invalide
+        '404':
+          description: Élève/matière non trouvé
+          
+          
+  /api/matieres:
+    get:
+      summary: Récupérer toutes les matières
+      tags:
+        - Matieres
+      responses:
+        '200':
+          description: Liste des matières récupérées avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Matiere'
+  
+    post:
+      summary: Créer une nouvelle matière
+      tags:
+        - Matieres
+      requestBody:
+        description: Données de la matière à créer
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/Matiere'
+      responses:
+        '201':
+          description: Matière créée avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Matiere'
+        '400':
+          description: Requête invalide
+
+  /api/matieres/{matiereId}:
+    get:
+      summary: Récupérer une matière par ID
+      tags:
+        - Matieres
+      parameters:
+        - name: matiereId
+          in: path
+          required: true
+          description: ID de la matière à récupérer
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Matière récupérée avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Matiere'
+        '404':
+          description: Matière non trouvée
+
+    put:
+      summary: Mettre à jour une matière par ID
+      tags:
+        - Matieres
+      parameters:
+        - name: matiereId
+          in: path
+          required: true
+          description: ID de la matière à mettre à jour
+          schema:
+            type: string
+      requestBody:
+        description: Nouvelles données de la matière à mettre à jour
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Matiere'
+      responses:
+        '200':
+          description: Matière miss à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Matiere'
+        '400':
+          description: Requête invalide
+        '404':
+          description: Matière non trouvé
+
+    delete:
+      summary: Supprimer une matière par ID
+      tags:
+        - Matieres
+      parameters:
+        - name: matiereId
+          in: path
+          required: true
+          description: ID de la matière à supprimer
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Matière supprimée avec succès
+        '404':
+          description: Matière non trouvée
+
+components:
+  schemas:
+    Eleve:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID de l'élève
+        firstName:
+          type: string
+          description: Prénom de l'élève
+        lastName:
+          type: string
+          description: Nom de l'élève
+        age:
+          type: integer
+          description: Âge de l'élève
+        classe:
+          $ref: '#/components/schemas/Classe'
+          description: Classe de l'élève
+
+    Enseignant:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID de l'enseignant
+        firstName:
+          type: string
+          description: Prénom de l'enseignant
+        lastName:
+          type: string
+          description: Nom de l'enseignant
+        matiere:
+          $ref: '#/components/schemas/Matiere'
+          description: Matière enseignée par l'enseignant
+
+    Classe:
+      type: object
+      properties:
+        nom:
+          type: string
+          description: Le nom de la classe
+        niveau:
+          type: string
+          description: Le niveau de la classe
+        matieres:
+          type: array
+          description: Liste des matières de la classe avec leurs coefficients et enseignants
+          items:
+            type: object
+            properties:
+              matiere:
+                type: string
+                description: L'ID de la matière associée à la classe (référence à la collection "Matiere")
+              coefficient:
+                type: number
+                description: Le coefficient associé à la matière dans cette classe
+              enseignant:
+                type: string
+                description: L'ID de l'enseignant qui enseigne cette matière dans cette classe (référence à la collection "Enseignant")
+          
+    Note:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID de la note
+        eleve:
+          $ref: '#/components/schemas/Eleve'
+          description: Élève concerné par la note
+        enseignant:
+          $ref: '#/components/schemas/Enseignant'
+          description: Enseignant responsable da note (donc de la matière)
+        matiere:
+          $ref: '#/components/schemas/Matiere'
+          description: Matière concernée par la note
+        note:
+          type: number
+          description: Note attribuée dans la matière
+
+    Matiere:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID de la matière
+        name:
+          type: string
+          description: Nom de la matière
