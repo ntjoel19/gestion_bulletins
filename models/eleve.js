@@ -6,6 +6,8 @@ const eleveSchema = new mongoose.Schema({
   dateNaissance: { type: Date, required: true },
   // Référence à la classe à laquelle l'élève appartient
   classe: { type: mongoose.Schema.Types.ObjectId, ref: 'Classe', required: true },
+  // Référence à l'etablissement auquel l'élève appartient
+  etablissement: { type: mongoose.Schema.Types.ObjectId, ref: 'Etablissement', required: true },
   // Autres informations relatives à l'élève
 });
 

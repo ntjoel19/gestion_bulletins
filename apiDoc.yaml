@@ -9,6 +9,114 @@ servers:
     description: Développement
 
 paths:
+  /api/etablissement:
+    get:
+      summary: Récupérer tous les etablissements
+      tags:
+        - Etablissements
+      responses:
+        '200':
+          description: Liste des etablissements récupérés avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Etablissement'
+  
+    post:
+      summary: Créer un nouvel etablissement
+      tags:
+        - Etablissements
+      requestBody:
+        description: Données de l'ets à créer
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/Etablissement'
+      responses:
+        '201':
+          description: Etablissement créé avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Etablissement'
+        '400':
+          description: Requête invalide
+
+  /api/etablissements/{etablissementId}:
+    get:
+      summary: Récupérer un etablissement par ID
+      tags:
+        - Etablissements
+      parameters:
+        - name: etablissementId
+          in: path
+          required: true
+          description: ID de l'etablissement à récupérer
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Etablissement récupéré avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Etablissement'
+        '404':
+          description: Etablissement non trouvé
+
+    put:
+      summary: Mettre à jour un etablissement par ID
+      tags:
+        - Etablissements
+      parameters:
+        - name: etablissementId
+          in: path
+          required: true
+          description: ID de l'etablissement à mettre à jour
+          schema:
+            type: string
+      requestBody:
+        description: Nouvelles données de l'etablissement à mettre à jour
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Etablissement'
+      responses:
+        '200':
+          description: Etablissement mis à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Etablissement'
+        '400':
+          description: Requête invalide
+        '404':
+          description: Etablissement non trouvé
+
+    delete:
+      summary: Supprimer un etablissement par ID
+      tags:
+        - Etablissements
+      parameters:
+        - name: etablissementId
+          in: path
+          required: true
+          description: ID de l'etablissement à supprimer
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Etablissement supprimé avec succès
+        '404':
+          description: Etablissement non trouvé
+          #######
+  
+
   /api/eleves:
     get:
       summary: Récupérer tous les élèves
@@ -714,6 +822,19 @@ components:
         _id:
           type: string
           description: ID de la matière
-        name:
+        nom:
           type: string
           description: Nom de la matière
+          
+    Etablissement:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID de l'ets
+        name:
+          type: string
+          description: Nom de l'ets
+        type:
+          type: string
+          description: Type (Technique, general,...)
