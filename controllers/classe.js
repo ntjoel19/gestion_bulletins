@@ -1,4 +1,4 @@
-const Classe = require('../models/classeModel');
+const Classe = require('../models/classe');
 
 exports.getAllClasses = (req, res, next) => {
     Classe.find().
@@ -10,7 +10,7 @@ exports.createClasses = async (req, res, next) => {
     const classe = new Classe({
       nom: req.body.nom,
       niveau: req.body.niveau,
-      matieres: req.body.matieres,
+      matieres: req.body.matieres
     });
   
     try {
@@ -43,6 +43,15 @@ exports.updateClasse = async (req, res, next) => {
     }
     if (req.body.matieres != null) {
       res.classe.matieres = req.body.matieres;
+    }
+    if (req.body.lv2 != null) {
+      res.classe.lv2 = req.body.lv2;
+    }
+    if (req.body.serie != null) {
+      res.classe.serie = req.body.serie;
+    }
+    if (req.body.profPrincipal != null) {
+      res.classe.profPrincipal = req.body.profPrincipal;
     }
     // Mettez à jour d'autres propriétés selon votre modèle de données
   

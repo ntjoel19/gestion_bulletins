@@ -734,6 +734,112 @@ paths:
           description: Matière supprimée avec succès
         '404':
           description: Matière non trouvée
+          
+  /api/roles:
+    get:
+      summary: Récupérer toutes les roles
+      tags:
+        - Roles
+      responses:
+        '200':
+          description: Liste des roles récupérées avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+  
+    post:
+      summary: Créer une nouvelle role
+      tags:
+        - Roles
+      requestBody:
+        description: Données de la role à créer
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/Role'
+      responses:
+        '201':
+          description: Role créée avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Requête invalide        
+  
+  /api/roles/{roleId}:
+    get:
+      summary: Récupérer une role par ID
+      tags:
+        - Roles
+      parameters:
+        - name: roleId
+          in: path
+          required: true
+          description: ID de la role à récupérer
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Role récupérée avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '404':
+          description: Role non trouvée
+
+    put:
+      summary: Mettre à jour une role par ID
+      tags:
+        - Roles
+      parameters:
+        - name: roleId
+          in: path
+          required: true
+          description: ID de la role à mettre à jour
+          schema:
+            type: string
+      requestBody:
+        description: Nouvelles données de la role à mettre à jour
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+      responses:
+        '200':
+          description: Role miss à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Requête invalide
+        '404':
+          description: Role non trouvé
+
+    delete:
+      summary: Supprimer une role par ID
+      tags:
+        - Roles
+      parameters:
+        - name: roleId
+          in: path
+          required: true
+          description: ID de la role à supprimer
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Role supprimée avec succès
+        '404':
+          description: Role non trouvée
 
 components:
   schemas:
@@ -743,6 +849,9 @@ components:
         _id:
           type: string
           description: ID de l'élève
+        matricule:
+          type: string
+          description: matricule de l'élève
         firstName:
           type: string
           description: Prénom de l'élève
@@ -755,6 +864,9 @@ components:
         classe:
           $ref: '#/components/schemas/Classe'
           description: Classe de l'élève
+        etablissement:
+          $ref: '#/components/schemas/Etablissement'
+          description: Etablissement de l'élève
 
     Enseignant:
       type: object
@@ -768,6 +880,16 @@ components:
         lastName:
           type: string
           description: Nom de l'enseignant
+        etablissement:
+          type: array
+          description: Liste des etablissements auxquel l'enseignant est rattaches
+          items:
+            type: object
+            properties:
+              etablissement:
+                type: string
+                $ref: '#/components/schemas/Etablissement'
+                description: L'ID de l'tablissement' (référence à la collection "Etablissement")
         matiere:
           $ref: '#/components/schemas/Matiere'
           description: Matière enseignée par l'enseignant
@@ -781,6 +903,16 @@ components:
         niveau:
           type: string
           description: Le niveau de la classe
+        lv2:
+          type: string
+          description: Langue vivante 2 de la classe (All, Esp,...)
+        serie:
+          type: string
+          description: Serie de la classe (C, D, E, TI, F3,...)
+        profPrincipal:
+          type: string
+          $ref: '#/components/schemas/Enseignant'
+          description: Id de l'enseignant qui y est professeur principal
         matieres:
           type: array
           description: Liste des matières de la classe avec leurs coefficients et enseignants
@@ -795,7 +927,44 @@ components:
                 description: Le coefficient associé à la matière dans cette classe
               enseignant:
                 type: string
+                $ref: '#/components/schemas/Enseignant'
                 description: L'ID de l'enseignant qui enseigne cette matière dans cette classe (référence à la collection "Enseignant")
+        
+    Role:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID du role
+        nom:
+          type: string
+          description: intitule du role (Enseignant, Censeur, Surveillant General, ...)
+        abreviation:
+          type: string
+          description: abreviation du role
+          
+    userAuth:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID du role
+        email:
+          type: string
+          description: adresse email valide de l'utilisateur
+        password:
+          type: string
+          description: mot de passe secure
+        role:
+          type: array
+          description: ID des role de l'utilisateur
+          items:
+            type: object
+            properties:
+              classeId:
+                type: string
+                $ref: '#/components/schemas/Role'
+                description: L'ID du role
           
     Note:
       type: object
@@ -838,3 +1007,13 @@ components:
         type:
           type: string
           description: Type (Technique, general,...)
+        classes:
+          type: array
+          description: ID des classes dont dispose l'etablissement
+          items:
+            type: object
+            properties:
+              classeId:
+                type: string
+                $ref: '#/components/schemas/Classe'
+                description: L'ID de la classe

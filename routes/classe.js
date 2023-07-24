@@ -14,7 +14,7 @@ router.get('/classes/:id', classeCtrl.getClasse, (req, res) => {
 });
 
 // Endpoint pour mettre à jour une classe
-router.get('/classes/:id', classeCtrl.getClasse, classeCtrl.updateClasse);
+router.put('/classes/:id', classeCtrl.getClasse, classeCtrl.updateClasse);
 
 // Endpoint pour supprimer une classe
 router.delete('/classes/:id', classeCtrl.getClasse, classeCtrl.deleteClasse);
