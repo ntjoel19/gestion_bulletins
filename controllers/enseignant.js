@@ -8,6 +8,7 @@ exports.getAllEnseignants = (req, res, next) => {
 
 exports.createEnseignant = async (req, res, next) => {
     const enseignant = new Enseignant({
+      authId: req.user.userId, //provient du middleware auth
       nom: req.body.nom,
       prenom: req.body.prenom,
       specialite: req.body.specialite,
@@ -37,6 +38,9 @@ exports.getEnseignant = async (req, res, next) => {
 }
 
 exports.updateEnseignant = async (req, res, next) => {
+    if (req.user.userId != null) {
+      res.enseignant.authId = req.user.userId;
+    }
     if (req.body.nom != null) {
       res.enseignant.nom = req.body.nom;
     }

@@ -5,7 +5,6 @@ const classeSchema = new mongoose.Schema({
   niveau: { type: String, required: true },
   lv2: { type: String },
   serie: { type: String },
-  profPrincipal: { type: mongoose.Schema.Types.ObjectId, ref: 'Enseignant', required: true },
   // Ajout d'un champ pour le coefficient de la matière dans cette classe
   matieres: [{
     matiere: { type: mongoose.Schema.Types.ObjectId, ref: 'Matiere', required: true },

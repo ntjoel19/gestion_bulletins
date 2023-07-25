@@ -3,7 +3,10 @@ const mongoose = require("mongoose");
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const dotenv = require("dotenv");
-dotenv.config()
+const cookieParser = require('cookie-parser');
+
+
+dotenv.config();
 
 // Import et montage des routes pour chaque entité
 
@@ -13,9 +16,12 @@ const enseignantRoutes = require('./routes/enseignant');
 const eleveRoutes = require('./routes/eleve');
 const classeRoutes = require('./routes/classe');
 const roleRoutes = require('./routes/role');
+const authRoutes = require('./routes/userAuth');
+const profPrincipalRoutes = require('./routes/profPrincipal');
 // const noteRoutes = require('./routes/noteRoutes');
 const app = express();
 
+app.use(cookieParser());
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 //app.use(helmet({crossOriginResourcePolicy: false,}));
@@ -47,6 +53,8 @@ app.use('/api', matiereRoutes);
 app.use('/api', enseignantRoutes);
 app.use('/api', eleveRoutes);
 app.use('/api', roleRoutes);
+app.use('/api', profPrincipalRoutes);
+app.use('/api/auth', authRoutes);
 // app.use('/api', noteRoutes);
 
 module.exports = app;

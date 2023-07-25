@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const eleveSchema = new mongoose.Schema({
+  matricule: {type: String, required: true},
   nom: { type: String, required: true },
   prenom: { type: String, required: true },
   dateNaissance: { type: Date, required: true },

@@ -8,6 +8,7 @@ exports.getAllEleves = (req, res, next) => {
 
 exports.createEleve = async (req, res, next) => {
     const eleve = new Eleve({
+      matricule: req.body.matricule,
       nom: req.body.nom,
       prenom: req.body.prenom,
       dateNaissance: req.body.dateNaissance,
@@ -44,8 +45,14 @@ exports.updateEleve = async (req, res, next) => {
     if (req.body.prenom != null) {
       res.eleve.prenom = req.body.prenom;
     }
-    if (req.body.specialite != null) {
-      res.eleve.specialite = req.body.specialite;
+    if (req.body.matricule != null) {
+      res.eleve.matricule = req.body.matricule;
+    }
+    if (req.body.dateNaissance != null) {
+      res.eleve.dateNaissance = req.body.dateNaissance;
+    }
+    if (req.body.classe != null) {
+      res.eleve.classe = req.body.classe;
     }
     if (req.body.etablissements != null) {
       res.eleve.etablissements = req.body.etablissements;
